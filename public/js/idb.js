@@ -69,3 +69,55 @@ function saveBudgetItem( record ) {
    // Add record to the store with the add method
    budgetObjectStore.add( record );
 };
+
+
+function uploadBudgetItems() {
+   // Open a transaction on the db to read the data
+   const transaction = db.transaction([ 'new_budget_item' ], 'readWrite' );
+
+   // Access the object store
+   const budgetObjectStore = transaction.objectStore( 'new_budget_item' );
+
+   // Get all records from store and set to a variable
+   // the .getAll() method is an asynchronous function that we
+   // have to attach an event handler to in order to retrieve the data
+   const getAll = budgetObjectStore.getAll();
+
+   getAll.onsuccess = function() {
+      // if there was data in indexedDb's store, let's send it to the api server
+      if ( getAll.result.length > 0 ) {
+         fetch( '/api/transaction', {
+            method: 'POST',
+            body: JSON.stringify( getAll.result ),
+            headers: {
+               Accept: 'application/json, text/plain, */*',
+               'Content-Type': 'application/json'
+            }
+         })
+         .then( response => response.json() )
+         .then( serverResponse => {
+            if (serverResponse.message ) {
+               throw new Error( serverResponse );
+            };
+
+            // Open one more transaction
+            const transaction = db.transaction([ 'new_budget_item' ], 'readWrite' );
+
+            // Access the new_budget_item object store
+            const budgetObjectStore = transaction.objectStore( 'new_budget_item' );
+
+            // Clear all the items in the object store
+            budgetObjectStore.clear();
+
+            alert( 'All saved budget items have been submitted' );
+         })
+         .catch( err => {
+            console.log( err );
+         })
+      };
+   };
+};
+
+
+// Listen for when the app goes back online
+window.addEventListener( 'online', uploadBudgetItems );
