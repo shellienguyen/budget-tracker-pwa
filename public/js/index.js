@@ -136,9 +136,8 @@ function sendTransaction(isAdding) {
   })
   .catch(err => {
     // fetch failed, so save in indexed db
-console.log('BEFORE saveBudgetItem function' );
     saveBudgetItem(transaction);
-console.log('AFTER saveBudgetItem function' );
+
     // clear form
     nameEl.value = "";
     amountEl.value = "";

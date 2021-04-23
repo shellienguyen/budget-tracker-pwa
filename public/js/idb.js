@@ -75,7 +75,7 @@ function saveBudgetItem( record ) {
 
 function uploadBudgetItems() {
    // Open a transaction on the db to read the data
-   const transaction = db.transaction([ 'new_budget_item' ], 'readWrite' );
+   const transaction = db.transaction([ 'new_budget_item' ], 'readwrite' );
 
    // Access the object store
    const budgetObjectStore = transaction.objectStore( 'new_budget_item' );
@@ -103,7 +103,7 @@ function uploadBudgetItems() {
             };
 
             // Open one more transaction
-            const transaction = db.transaction([ 'new_budget_item' ], 'readWrite' );
+            const transaction = db.transaction([ 'new_budget_item' ], 'readwrite' );
 
             // Access the new_budget_item object store
             const budgetObjectStore = transaction.objectStore( 'new_budget_item' );
