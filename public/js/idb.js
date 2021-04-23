@@ -38,10 +38,13 @@ request.onsuccess = function( event ) {
    */
    db = event.target.result;
 
+console.log( "db connection SUCCESS!")
+
    // If app is online, run uploadBudgetItems() function to send all indexedDB
-   // dtat to the API
+   // data to the API
    if ( navigator.onLine ) {
-      //uploadBudgetItems();
+console.log( "Navigator is ONLINE!")
+      uploadBudgetItems();
    };
 };
 
@@ -55,16 +58,38 @@ request.onerror = function( event ) {
 /*
 This function will be executed if an attempt to submit a new budget item is made
 and there's no internet connection.  This saveBudgetItem() function will be used
-in the ************* file's form submission function if the fetch() function's
-.catch() method is executed, since the .catch() method is executed on netowrk failure.
+in the index.js file's form submission function (sendTransaction function) if the
+fetch() function's .catch() method is executed, since the .catch() method is
+executed on netowrk failure.
 */
 function saveBudgetItem( record ) {
+
+console.log( 'HELLO' );
+console.log( record );
+console.log( 'BYE' );
    // Open a new transaction with the database with read and write permissions
    // Kind of like a temporary connection to the db
-   const budgetItem = db.transaction([ 'new_budget_item' ], 'readWrite' );
+   const budgetItem = db.transaction( [ 'new_budget_item' ], 'readWrite' );
 
-   // Access the object store for 'new_budget_item'
+// report on the success of opening the transaction
+budgetItem.oncomplete = function(event) {
+   console.log( 'successfully opened transaction' );
+};
+
+// report on the failure of opening the transaction
+budgetItem.onerror = function(event) {
+   console.log( 'failed to open transaction' );
+};
+console.log( 'GLOOMY' );
+console.log( budgetItem );
+console.log( 'DAY' );
+
+  // Access the object store for 'new_budget_item'
    const budgetObjectStore = budgetItem.objectStore( 'new_budget_item' );
+
+console.log( 'BLUE' );
+console.log( budgetObjectStore );
+console.log( 'SKY' );
 
    // Add record to the store with the add method
    budgetObjectStore.add( record );
@@ -78,8 +103,8 @@ function uploadBudgetItems() {
    // Access the object store
    const budgetObjectStore = transaction.objectStore( 'new_budget_item' );
 
-   // Get all records from store and set to a variable
-   // the .getAll() method is an asynchronous function that we
+   // Get all records from store and set to a variable.
+   // The .getAll() method is an asynchronous function that we
    // have to attach an event handler to in order to retrieve the data
    const getAll = budgetObjectStore.getAll();
 
