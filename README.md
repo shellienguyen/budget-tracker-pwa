@@ -2,7 +2,7 @@
 
 ## Description
 
-Budget Tracker is a progressive web application that provides users with a a fast and easy way to track budget (expenses and income).  The app allows users to access their budgeting information at any time even when they are offline.  When using the app the users can add expenses and deposits to their budget with or without a connection. If the users enter transactions offline, the total will be updated when they're brought back online.
+Budget Tracker is a progressive web application that provides users with a a fast and easy way to track budget (expenses and income).  The application allows users to access their budgeting information at any time even when they are offline.  When using the app the users can add expenses and deposits to their budget with or without a connection. If the users enter transactions offline, the total will be updated when they're brought back online.
 
 ## Usage
 
